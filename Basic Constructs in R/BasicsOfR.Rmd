@@ -1,0 +1,729 @@
+---
+title: Basic Constructs in R
+subtitle: R structures, and the apply class of functions
+author: Spencer Lourens
+date: '`r format(Sys.Date(), "%B %d %Y")`'
+fontsize: 10pt
+output:
+  beamer_presentation:
+  theme: "Darmstadt"
+  # keep_tex: true
+  # toc: true
+  slide_level: 3
+  includes:
+    in_header: ~/header.txt
+---
+
+```{r library_inclusions, include=FALSE}
+library(MASS)
+```
+
+
+### R Background
+\begin{itemize}
+\item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation
+\end{itemize}
+
+### R Background
+\begin{itemize}
+\item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation
+\begin{itemize}
+\item Implementation of S language, which was created by John Chambers at Bell Labs
+\end{itemize}
+\end{itemize}
+
+### R Background
+\begin{itemize}
+\item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation 
+\begin{itemize}
+\item Implementation of S language, which was created by John Chambers at Bell Labs
+\item R was created by Ross Ihaka and Robert Gentleman, at University of Auckland, New Zealand (Hadley Wickham!!)
+\end{itemize}
+\end{itemize}
+
+### R Background
+\begin{itemize}
+\item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation
+\begin{itemize}
+\item Implementation of S language, which was created by John Chambers at Bell Labs
+\item R was created by Ross Ihaka and Robert Gentleman, at University of Auckland, New Zealand (Hadley Wickham!!)
+\item Many standard functions in R are written in R, however, more computationally intensive tasks are coded in C++, C, or Fortran. R provides methods for linking these lower level languages into the R framework
+\end{itemize}
+\end{itemize}
+
+### R Background
+\begin{itemize}
+\item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation
+\begin{itemize}
+\item Implementation of S language, which was created by John Chambers at Bell Labs
+\item R was created by Ross Ihaka and Robert Gentleman, at University of Auckland, New Zealand (Hadley Wickham!!)
+\item Many standard functions in R are written in R, however, more computationally intensive tasks are coded in C++, C, or Fortran. R provides methods for linking these lower level languages into the R framework
+\item R is easily extensible through the use of packages. The primary repository for R packages is \href{https://cran.r-project.org/}{CRAN}, though there are also many packages geared towards bioinformatics on \href{https://www.bioconductor.org/}{Bioconductor}. There were 7,801 add-on packages available for R as of January 2016
+\end{itemize}
+\end{itemize}
+
+### R Implementation
+\begin{itemize}
+\item R is an interpreted language, essentially meaning that you don't need to compile your programs in order to run them. The interpreter "interprets" your code and returns a result immediately
+\end{itemize}
+
+### R Implementation
+\begin{itemize}
+\item R is an interpreted language, essentially meaning that you don't need to compile your programs in order to run them. The interpreter "interprets" your code and returns a result immediately
+\item A compiler for R was recently introduced, which apparently can increase speed considerably in certain situations where you may run the same code over and over. (Think R packages, common analytical techniques, etc.)
+\end{itemize}
+
+### R Implementation
+\begin{itemize}
+\item R is an interpreted language, essentially meaning that you don't need to compile your programs in order to run them. The interpreter "interprets" your code and returns a result immediately
+\item A compiler for R was recently introduced, which apparently can increase speed considerably in certain situations where you may run the same code over and over. (Think R packages, common analytical techniques, etc.)
+\item I do not intend to focus on the implementation of R and how it "works", so let's dive into the functionality of R
+\end{itemize}
+
+### R Implementation
+\begin{itemize}
+\item R is an interpreted language, essentially meaning that you don't need to compile your programs in order to run them. The interpreter "interprets" your code and returns a result immediately
+\item A compiler for R was recently introduced, which apparently can increase speed considerably in certain situations where you may run the same code over and over. (Think R packages, common analytical techniques, etc.)
+\item I do not intend to focus on the implementation of R and how it "works", so let's dive into the functionality of R
+\item Things I plan to cover:
+\begin{itemize}
+\item scalars, vectors, matrices, lists, data frames, functions, and the "apply" class of functions
+\item The "apply" class of functions is very useful for iterating over a list or vector conducting the same operation on each entity in the list/vector
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Scalars
+\begin{itemize}
+\item scalars - one value, for example: 3, 4.31, -10024
+\end{itemize}
+
+### R Data Structures: Scalars
+\begin{itemize}
+\item scalars - one value, for example: 3, 4.31, -10024
+\end{itemize}
+```{r}
+y1 <- 3
+y2 <- 4.31
+y3 <- -10024
+```
+
+### R Data Structures: Scalars
+\begin{itemize}
+\item scalars - one value, for example: 3, 4.31, -10024
+\end{itemize}
+```{r}
+y1 <- 3
+y2 <- 4.31
+y3 <- -10024
+```
+\begin{itemize}
+\item The values of y1, y2, and y3 are all set accordingly
+\end{itemize}
+
+### R Data Structures: Vectors
+\begin{itemize}
+\item vectors - a number of values, for example: [3,4,1,2], [3.4, 4.16, 7.21, 8.67]
+\end{itemize}
+
+### R Data Strucures: Vectors
+\begin{itemize}
+\item vectors - a number of values, for example: [3,4,1,2], [3.4, 4.16, 7.21, 8.67]
+\end{itemize}
+```{r}
+v1 <- c(3, 4, 1, 2)
+v2 <- c(3.4, 4.16, 7.21, 8.65)
+```
+
+### R Data Strucures: Vectors
+\begin{itemize}
+\item vectors - a one dimensional list of values, for example: [3,4,1,2], [3.4, 4.16, 7.21, 8.67]
+\end{itemize}
+```{r}
+v1 <- c(3, 4, 1, 2)
+v2 <- c(3.4, 4.16, 7.21, 8.65)
+```
+\begin{itemize}
+\item Now v1, v2 are assigned to the vectors specified above
+\end{itemize}
+v1: `r v1`, v2: `r v2`
+
+### R Data Structures: Cont'd
+\begin{itemize}
+\item How do we access elements in a vector? We use the usual index notation, which starts at 1 in R. Some languages (C, C++, Fortran, python, javaScript, etc.) start at 0.
+\end{itemize}
+```{r}
+v1[1]
+v2[1]
+```
+
+### R Data Structures: Matrices
+\begin{itemize}
+\item matrices: a two dimensional list of values, for example: [3 4 1 2, 3.4 4.16 7.21 8.67], [1 0, 0 1]
+\end{itemize}
+
+### R Data Structures: Matrices
+\begin{itemize}
+\item matrices: a two dimensional list of values, for example: [3 4 1 2, 3.4 4.16 7.21 8.67], [1 0, 0 1]
+\end{itemize}
+```{r}
+m1 <- matrix(c(3, 4, 1, 2, 3.4, 4.16, 7.21, 8.67), 
+             nrow = 2, byrow = T)
+m2 <- matrix(c(1, 0, 0, 1), nrow = 2, byrow = T)
+```
+
+### R Data Structures: Matrices
+\begin{itemize}
+\item matrices: a two dimensional list of values, for example: [3 4 1 2, 3.4 4.16 7.21 8.67], [1 0, 0 1]
+\end{itemize}
+```{r}
+m1 <- matrix(c(3, 4, 1, 2, 3.4, 4.16, 7.21, 8.67), 
+             nrow = 2, byrow = T)
+m2 <- matrix(c(1, 0, 0, 1), nrow = 2, byrow = T)
+```
+\begin{itemize}
+\item The argument byrow tells the matrix function whether to create the matrix row by row, from first index to last index. The argument nrow specified the number of rows.
+\end{itemize}
+\bf{m1:}
+`r knitr::kable(m1)`
+Access an element in m1: `r m1[1,2]`
+
+### R Data Structures: Lists
+\begin{itemize}
+\item Lists - I think of lists as a generalized version of a vector, where the type of each index need not be the same. The first index of a list can be a scalar, the second index of a list can be a vector, the third index can be another list, and so on. Examples are below:
+\end{itemize}
+
+### R Data Structures: Lists
+\begin{itemize}
+\item Lists - I think of lists as a generalized version of a vector, where the type of each index need not be the same. The first index of a list can be a scalar, the second index of a list can be a vector, the third index can be another list, and so on. Examples are below:
+\end{itemize}
+```{r}
+l1 <- list(y1, v1, m1)
+l2 <- list(first = l1, second = v1, 
+           third = m1, fourth = function(x) {x ^ 2})
+```
+
+### R Data Structures: Lists
+\begin{itemize}
+\item Lists - I think of lists as a generalized version of a vector, where the type of each index need not be the same. The first index of a list can be a scalar, the second index of a list can be a vector, the third index can be another list, and so on. Examples are below:
+\end{itemize}
+```{r}
+l1 <- list(y1, v1, m1)
+l2 <- list(first = l1, second = v1, 
+           third = m1, fourth = function(x) {x ^ 2})
+```
+\begin{itemize}
+\item Notice that both lists above are valid in R. You can even place functions into a list, as we did in l2.
+\end{itemize}
+
+### R Data Structures: Lists
+\begin{itemize}
+\item Lists - I think of lists as a generalized version of a vector, where the type of each index need not be the same. The first index of a list can be a scalar, the second index of a list can be a vector, the third index can be another list, and so on. Examples are below:
+\end{itemize}
+```{r}
+l1 <- list(y1, v1, m1)
+l2 <- list(first = l1, second = v1, 
+           third = m1, fourth = function(x) {x ^ 2})
+```
+\begin{itemize}
+\item Notice that both lists above are valid in R. You can even place functions into a list, as we did in l2.
+\end{itemize}
+
+### R Data Structures: Lists
+\begin{itemize}
+\item Lists - I think of lists as a generalized version of a vector, where the type of each index need not be the same. The first index of a list can be a scalar, the second index of a list can be a vector, the third index can be another list, and so on. Examples are below:
+\end{itemize}
+```{r}
+l1 <- list(y1, v1, m1)
+l2 <- list(first = l1, second = v1, 
+           third = m1, fourth = function(x) {x ^ 2})
+```
+\begin{itemize}
+\item Notice that both lists above are valid in R. You can even place functions into a list, as we did in l2.
+\item Lists are incredibly useful, as we will see later in this lecture. Lists can allow for calculating complicated expressions involved in survival likelihoods, for example.
+\end{itemize}
+
+### R Data Structures: Lists (Cont'd)
+\begin{itemize}
+\item How do we access elements in lists? It works similar to vectors/matrices...
+\end{itemize}
+
+### R Data Structures: Lists (Cont'd)
+\begin{itemize}
+\item How do we access elements in lists? It works similar to vectors/matrices, but there is more notation
+\end{itemize}
+```{r}
+l1[[1]]
+l1[[2]]
+l2$second
+```
+
+### R Data Structures: Lists (Cont'd)
+\begin{itemize}
+\item One element in a list can be quite complicated!
+\end{itemize}
+```{r}
+l2$first
+```
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item Data frames are the fundamental data structure in R. They share many similarities with matrices and lists.
+\item A data frame is formally a list of variables with the same number of rows. You can therefore access each variable as you would an element in a list, for instance, with the \$ operator.
+\end{itemize}
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item Data frames are the fundamental data structure in R. They share many similarities with matrices and lists.
+\item A data frame is formally a list of variables with the same number of rows. You can therefore access each variable as you would an element in a list, for instance, with the \$ operator.
+\item Data frames are matrix like objects which can have columns of different types. Compare this to lists, where each index can be of different type. For instance, the first column may be numeric, the second may be a factor, the third may be of type string, etc. This can be accomplished with lists, but data frames provide extra convenience, including easier access and other functionality
+\end{itemize}
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item Example:
+\end{itemize}
+```{r echo = FALSE}
+suppressWarnings(library(TeachingDemos))
+```
+```{r}
+mySeed <- char2seed("Spencer")
+set.seed(mySeed) ## So df1 stays the same
+df1 <- data.frame(y1 = rnorm(2, 0, 1), y2 = rexp(2, 1), 
+                  y3 = rbeta(2, 1, 1))
+knitr::kable(df1)
+df1$y1
+```
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item It is very simple to calculate new variables in a data set. We will learn dplyr later in this class, but for now I will teach the ``old guard" way of doing things
+\end{itemize}
+```{r}
+df1$y4 <- df1$y1^2 + df1$y2^2 + df1$y3^2
+df1$y4
+```
+\begin{itemize}
+\item You can also look at rows or columns using the following code
+\end{itemize}
+```{r eval = F}
+## Access row 2
+df1[2,]
+## Access colum 3
+df1[,3]
+```
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item R Data frames can be viewed as the building blocks for using the R language. 
+\end{itemize}
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item R Data frames can be viewed as the building blocks for using the R language. 
+\begin{itemize} 
+\item In almost every case, main analysis/modeling function in CRAN packages take data frames as arguments. 
+\end{itemize}
+\end{itemize}
+
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item R Data frames can be viewed as the building blocks for using the R language. 
+\begin{itemize} 
+\item In almost every case, main analysis/modeling function in CRAN packages take data frames as arguments. 
+\item Includes the information used to construct design matrices, start the optimization algorithm for estimating model parameters
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Data Frames
+\begin{itemize}
+\item R Data frames can be viewed as the building blocks for using the R language. 
+\begin{itemize} 
+\item In almost every case, main analysis/modeling function in CRAN packages take data frames as arguments. 
+\item Includes the information used to construct design matrices, start the optimization algorithm for estimating model parameters
+\item Using data frames efficiently in your own software can make writing code very efficient. As an example, check out the model.frame() and model.matrix() functions.
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\item[3)] A result is returned or other objects are manipulated in the process
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\item[3)] A result is returned or other objects are manipulated in the process
+\end{itemize}
+\item The best practice is as follows when writing your own software, or even script for commonly used techniques/reports
+\end{itemize}
+
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\item[3)] A result is returned or other objects are manipulated in the process
+\end{itemize}
+\item The best practice is as follows when writing your own software, or even script for commonly used techniques/reports
+\begin{itemize}
+\item Any repeated action should be made into a function
+\end{itemize}
+\end{itemize}
+
+
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\item[3)] A result is returned or other objects are manipulated in the process
+\end{itemize}
+\item The best practice is as follows when writing your own software, or even script for commonly used techniques/reports
+\begin{itemize}
+\item Any repeated action should be made into a function
+\item Anticipate extending your functions by generalizing the procedure
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Functions
+\begin{itemize}
+\item Functions in R work exactly as they do in other languages. 
+\begin{itemize}
+\item[1)] You give a function an input or series of inputs
+\item[2)] Actions are performed with the inputs (this is determined by the body of the function)
+\item[3)] A result is returned or other objects are manipulated in the process
+\end{itemize}
+\item The best practice is as follows when writing your own software, or even script for commonly used techniques/reports
+\begin{itemize}
+\item Any repeated action should be made into a function
+\item Anticipate extending your functions by generalizing the procedure
+\item For instance, make the number of predictors a variable, or better yet let the function take a vector of strings which denotes all predictors
+\end{itemize}
+\end{itemize}
+
+### R Data Structures: Function examples
+```{r}
+fib <- function(number)
+{
+  ## Simple test for integer value - doesn't really 
+  ## work if number is VERY close to an integer
+  isInt <- all.equal(number, as.integer(number))
+  if (number <= 2)
+  {
+    return(1)
+  } else
+  {
+    return(fib(number-1) + fib(number - 2))
+  }
+}
+```
+
+### Apply class of functions
+\begin{itemize}
+\item Apply class of functions take the place of loops, where we use a ``counter" to iterate over entities in a matrix, vector, or list
+\end{itemize}
+
+
+### Apply class of functions
+\begin{itemize}
+\item Apply class of functions take the place of loops, where we use a ``counter" to iterate over entities in a matrix, vector, or list
+\item First example function:\textbf{apply(X, MARGIN, FUN, ...)}
+\end{itemize}
+
+
+### Apply class of functions
+\begin{itemize}
+\item Apply class of functions take the place of loops, where we use a ``counter" to iterate over entities in a matrix, vector, or list
+\item First example function: \textbf{apply(X, MARGIN, FUN, ...)}
+\begin{itemize}
+\item X: an array, including a matrix. MARGIN: 1 (rows) or 2 (columns). FUN: the function to be applied. Returns the result applied to each row or column of X. May return a matrix if results are vectors.
+\end{itemize}
+\end{itemize}
+
+
+### Apply class of functions: apply
+\begin{itemize}
+\item Apply class of functions take the place of loops, where we use a ``counter" to iterate over entities in a matrix, vector, or list
+\item First example function: \textbf{apply(X, MARGIN, FUN, ...)}
+\begin{itemize}
+\item X: an array, including a matrix. MARGIN: 1 (rows) or 2 (columns). FUN: the function to be applied. Returns the result applied to each row or column of X. May return a matrix if results are vectors.
+\end{itemize}
+\end{itemize}
+```{r}
+## rows
+apply(m1, 1, mean)
+## columns
+apply(m1, 2, mean)
+```
+
+### Apply class of functions: apply
+```{r}
+minMax <- function(x) {return(c(min(x), max(x)))}
+## rows
+apply(m1, 1, minMax)
+## columns
+apply(m1, 2, minMax)
+```
+
+### Apply class of functions: lapply
+\begin{itemize}
+\item lapply: Apply a function over a list or vector
+\end{itemize}
+
+### Apply class of functions: lapply
+\begin{itemize}
+\item lapply: Apply a function over a list or vector
+\item \textbf{lapply(X, FUN)} - X: a vector (atomic or list). FUN: the function to be applied to each element of X
+\end{itemize}
+
+### Apply class of functions: lapply
+\begin{itemize}
+\item lapply: Apply a function over a list or vector
+\item \textbf{lapply(X, FUN)} - X: a vector (atomic or list). FUN: the function to be applied to each element of X
+\item In the below, each element of l3 is a vector of 10000 standard normal deviates
+\end{itemize}
+```{r echo = FALSE}
+set.seed(mySeed)
+l3 <- lapply(1:3, function(t) {rnorm(10000, 0, 1)})
+```
+```{r}
+lapply(l3, mean)
+```
+
+
+### Apply class of functions: mapply
+\begin{itemize}
+\item The mapply function has been the most useful of the apply functions for my work
+\end{itemize}
+
+### Apply class of functions: mapply
+\begin{itemize}
+\item The mapply function has been the most useful of the apply functions for my work
+\item It is essentially a multivariate version of lapply, with slightly different syntax
+\end{itemize}
+
+### Apply class of functions: mapply
+\begin{itemize}
+\item The mapply function has been the most useful of the apply functions for my work
+\item It is essentially a multivariate version of lapply, with slightly different syntax
+\item \textbf{mapply(FUN, ..., SIMPLIFY = TRUE)} - FUN: function to apply, ...: lists or vectors to iterate over, SIMPLIFY: logical or character string, should R attemp to reduce the result to a vector/matrix, or keep as a list? 
+\end{itemize}
+
+### Apply class of functions: mapply
+\begin{itemize}
+\item The mapply function has been the most useful of the apply functions for my work
+\item It is essentially a multivariate version of lapply, with slightly different syntax
+\item \textbf{mapply(FUN, ..., SIMPLIFY = TRUE)} - FUN: function to apply, ...: lists or vectors to iterate over, SIMPLIFY: logical or character string, should R attemp to reduce the result to a vector/matrix, or keep as a list? 
+\item I almost always use SIMPLIFY = FALSE to keep list structure of answer
+\end{itemize}
+
+### Example of using mapply
+\begin{itemize}
+\item Function mapply is a go-to when you have multiple lists or vectors of the same length and need to use the same operation on each index before gathering your results.
+\end{itemize}
+
+### Example of using mapply
+\begin{itemize}
+\item Function mapply is a go-to when you have multiple lists or vectors of the same length and need to use the same operation on each index before gathering your results.
+\item Recall the multivariate normal likelihood, i.e. we observe an independent sample (of size $n$), with $i$ th observation denoted $Y_i$ with dimension $q_i x 1$, and assume that:
+\end{itemize}
+\begin{align}
+Y_{ij} &= X_{ij}\beta + b_{oi} + \epsilon_{ij} \\ &\sim N(X_{ij}\beta, \sigma^2_b + \sigma^2)  
+\end{align}
+\begin{itemize}
+\item Where $X_{ij}$ is a vector of covariates for the $i$th subject at the $j$th timepoint. This is referred to as a linear mixed model with random subject intercepts.
+\end{itemize}
+
+### Example of using mapply
+\begin{itemize}
+\item Calculation of the log-likelihood requires matrix multiplication of $X_i$ and a current estimate for $\beta$, i.e. $\hat{\beta}$, then subtracting this from $y_i$, and finally, forming a quadratic form with $\Sigma_i^{-1}$
+\end{itemize}
+
+### Example of using mapply
+\begin{itemize}
+\item Calculation of the log-likelihood requires matrix multiplication of $X_i$ and a current estimate for $\beta$, i.e. $\hat{\beta}$, then subtracting this from $y_i$, and finally, forming a quadratic form with $\Sigma_i^{-1}$
+\item The above calculation denotes $(y_i - X_i\beta)'\frac{\Sigma_i^{-1}}{2}(y_i - X_i\beta)$ from the log-likelihood in this problem
+\end{itemize}
+
+### Example of using mapply
+\begin{itemize}
+\item Calculation of the log-likelihood requires matrix multiplication of $X_i$ and a current estimate for $\beta$, i.e. $\hat{\beta}$, then subtracting this from $y_i$, and finally, forming a quadratic form with $\Sigma_i^{-1}$
+\item The above calculation denotes $(y_i - X_i\beta)'\frac{\Sigma_i^{-1}}{2}(y_i - X_i\beta)$ from the log-likelihood in this problem
+\item The following slides show how to use mapply and other base R functions to get this calculation off the ground using a toy data set.
+\end{itemize}
+
+### Example of using mapply (Cont'd)
+\begin{itemize}
+\item Consider the following dataset with $y_1$ and $x_1, x_2, x_3, x_4$ included.
+\end{itemize}
+```{r echo = FALSE}
+set.seed(mySeed)
+beta <- c(0.25, -0.25, 0.5, 1.25)
+sigma2b <- 0.25
+sigma2 <- 1.25
+dflmer <- lapply(1:30, function(t)
+{
+  ni <- ceiling(runif(1, 0, 10))
+  Xcurr <- mvrnorm(n = ni, mu = c(1, 1, 3, 2), Sigma = diag(4))
+  fixed <- Xcurr %*% beta
+  Sigma <- diag(sigma2, ni) + matrix(rep(sigma2b, ni * ni), ncol = ni, nrow = ni) - diag(sigma2b, ni)
+  if (ni > 1)
+  {
+    dfSmall <- data.frame(id = rep(t, ni), y1 = mvrnorm(1, mu = fixed, Sigma = Sigma), x1 = Xcurr[,1], x2 = Xcurr[,2], x3 = Xcurr[,3], x4 = Xcurr[,4])
+  } else
+  {
+    dfSmall <- data.frame(id = rep(t, ni), y1 = mvrnorm(1, mu = fixed, Sigma = Sigma), x1 = Xcurr[1], x2 = Xcurr[2], x3 = Xcurr[3], x4 = Xcurr[4])
+  }
+  return(dfSmall)
+})
+dflmer <- do.call("rbind", dflmer)
+dfX <- dflmer[,c("id", "x1", "x2", "x3", "x4")]
+dfY <- dflmer[,c("id", "y1")]
+dfXSplit <- split(dfX, dfX$id)
+dfYSplit <- split(dfY, dfY$id)
+```
+\begin{itemize}
+\item Example of what one index might look like:
+\end{itemize}
+```{r}
+dfYSplit[[2]]$y1
+```
+```{r results = 'asis'}
+knitr::kable(dfXSplit[[2]][,c("x1", "x2", "x3", "x4")])
+```
+
+### Example of using mapply (Cont'd)
+\begin{itemize}
+\item Current beta estimate:
+\end{itemize}
+```{r}
+beta
+```
+
+### Example of using mapply (Cont'd)
+\begin{itemize}
+\item Current beta estimate:
+\end{itemize}
+```{r}
+beta
+```
+\begin{itemize}
+\item Current $sigma^2$ and $sigma^2_b$ estimates:
+\end{itemize}
+```{r}
+sigma2
+sigma2b
+```
+
+### Example of using mapply (Cont'd)
+\begin{itemize}
+\item The below code puts it all together!
+\end{itemize}
+```{r}
+quadForms <- mapply(function(a, b) {
+  currY <- a[,"y1"]
+  currXM <- b[,c("x1", "x2", "x3", "x4")]
+  fixed <- as.matrix(currXM) %*% beta
+  ni <- dim(currXM)[1]
+  Sigma <- diag(sigma2, ni) + matrix(rep(sigma2b, ni * ni), 
+                ncol = ni, nrow = ni) - diag(sigma2b, ni)
+  res <- t(currY - fixed) %*% solve(Sigma) %*% 
+          (currY - fixed) / 2
+  return(res)
+}, dfYSplit, dfXSplit, SIMPLIFY = FALSE)
+```
+
+
+### Example of using mapply (Cont'd)
+\begin{itemize}
+\item The below code puts it all together!
+\end{itemize}
+```{r}
+quadForms <- mapply(function(a, b) {
+  currY <- a[,"y1"]
+  currXM <- b[,c("x1", "x2", "x3", "x4")]
+  fixed <- as.matrix(currXM) %*% beta
+  ni <- dim(currXM)[1]
+  Sigma <- diag(sigma2, ni) + matrix(rep(sigma2b, ni * ni), 
+                ncol = ni, nrow = ni) - diag(sigma2b, ni)
+  res <- t(currY - fixed) %*% solve(Sigma) %*% 
+          (currY - fixed) / 2
+  return(res)
+}, dfYSplit, dfXSplit, SIMPLIFY = FALSE)
+```
+\begin{itemize}
+\item Mapply provides a convenient way to put our "building blocks" together
+\end{itemize}
+
+### Summary
+\begin{itemize}
+\item R is a computational programming language primarily used by Statisticians/Data Scientists
+\end{itemize}
+
+
+### Summary
+\begin{itemize}
+\item R is a computational programming language primarily used by Statisticians/Data Scientists
+\item Many existing data structures, i.e. vectors, matrices, lists, functions...
+\end{itemize}
+
+### Summary
+\begin{itemize}
+\item R is a computational programming language primarily used by Statisticians/Data Scientists
+\item Many existing data structures, i.e. vectors, matrices, lists, functions...
+\item Apply class of functions very useful for replacing loops which conduct same operation many times
+\end{itemize}
+
+### Summary
+\begin{itemize}
+\item R is a computational programming language primarily used by Statisticians/Data Scientists
+\item Many existing data structures, i.e. vectors, matrices, lists, functions...
+\item Apply class of functions very useful for replacing loops which conduct same operation many times
+\item Mapply function in particular is very useful when we have many lists.
+\end{itemize}
+
+
+### Summary
+\begin{itemize}
+\item R is a computational programming language primarily used by Statisticians/Data Scientists
+\item Many existing data structures, i.e. vectors, matrices, lists, functions...
+\item Apply class of functions very useful for replacing loops which conduct same operation many times
+\item Mapply function in particular is very useful when we have many lists
+\item Note that lapply can replace mapply if each list element has multiple list entities
+\item Ex: l1[[1]] = list(l11, l12, l13, l14) (access with the \$ operator)
+\end{itemize}

@@ -1,0 +1,308 @@
+---
+title: "Basic Constructs in R"
+author: "Spencer Lourens"
+date: '`r format(Sys.Date(), "%B %d %Y")`'
+output:
+  ioslides_presentation: default
+  includes:
+    in_header: ~/header.txt
+  beamer_presentation: null
+  slide_level: 3
+  theme: Darmstadt
+subtitle: R structures, and the apply class of functions
+fontsize: 10pt
+---
+
+```{r library_inlusions, include = FALSE}
+library(dplyr)
+library(tidyr)
+library(EDAWR)
+library(nycflights13)
+```
+
+### Data Wrangling! (Using dplyr, tidyr)
+\begin{itemize}
+\item \textbf{Data wrangling}: The practical task of transforming the \textit{layout}, \textit{substance}, and \textit{display} of your data - Garrett Grolemund, RStudio
+\end{itemize}
+
+### Data Wrangling! (Using dplyr, tidyr)
+\begin{itemize}
+\item \textbf{Data wrangling}: The practical task of transforming the \textit{layout}, \textit{substance}, and \textit{display} of your data - Garrett Grolemund, RStudio
+\item \textbf{Data wrangling} can be broken into three basic domains: data manipulation, data tidying (for analysis/visualization), and data visualization
+\end{itemize}
+
+
+### Data Wrangling! (Using dplyr, tidyr)
+\begin{itemize}
+\item \textbf{Data wrangling}: The practical task of transforming the \textit{layout}, \textit{substance}, and \textit{display} of your data - Garrett Grolemund, RStudio
+\item \textbf{Data wrangling} can be broken into three basic domains: data manipulation, data tidying (for analysis/visualization), and data visualization
+\item \textit{Data manipulation} - Change the variables, their values, or the sample units used for analysis (aggregation?)
+\end{itemize}
+
+### Data Wrangling! (Using dplyr, tidyr)
+\begin{itemize}
+\item \textbf{Data wrangling}: The practical task of transforming the \textit{layout}, \textit{substance}, and \textit{display} of your data - Garrett Grolemund, RStudio
+\item \textbf{Data wrangling} can be broken into three basic domains: data manipulation, data tidying (for analysis/visualization), and data visualization
+\item \textit{Data manipulation} - Change the variables, their values, or the sample units used for analysis (aggregation?)
+\item \textit{Data tidying} - Change the LAYOUT of the data - wide, long, etc., most of the time for software use
+\end{itemize}
+
+### Data Wrangling! (Using dplyr, tidyr)
+\begin{itemize}
+\item \textbf{Data wrangling}: The practical task of transforming the \textit{layout}, \textit{substance}, and \textit{display} of your data - Garrett Grolemund, RStudio
+\item \textbf{Data wrangling} can be broken into three basic domains: data manipulation, data tidying (for analysis/visualization), and data visualization
+\item \textit{Data manipulation} - Change the variables, their values, or the sample units used for analysis (aggregation?)
+\item \textit{Data tidying} - Change the LAYOUT of the data - wide, long, etc., most of the time for software use
+\item \textit{Data visualization} - Make use of our visual way of thinking by representing data in a visual format
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\item A tbl is a dataframe 
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\item A tbl is a dataframe 
+\begin{itemize}
+\item that works seemlessly with dplyr functions
+\end{itemize}
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\item A tbl is a dataframe 
+\begin{itemize}
+\item that works seemlessly with dplyr functions
+\item that optimizes display when printed without printing too much and taking up unnecessary cache memory (slows down your R session)
+\end{itemize}
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\item A tbl is a dataframe 
+\begin{itemize}
+\item that works seemlessly with dplyr functions
+\item that optimizes display when printed without printing too much and taking up unnecessary cache memory (slows down your R session)
+\end{itemize}
+\item The pipe (\%>\%) operator
+\end{itemize}
+
+### Preliminaries
+\begin{itemize}
+\item The dplyr package creates another structure, called a tbl (table, or as Hadley says, tibble)
+\item A tbl is a dataframe 
+\begin{itemize}
+\item that works seemlessly with dplyr functions
+\item that optimizes display when printed without printing too much and taking up unnecessary cache memory (slows down your R session)
+\end{itemize}
+\item The pipe (\%>\%) operator
+\begin{itemize}
+\item allows more concise, perhaps narrative-looking production of code
+\end{itemize}
+\end{itemize}
+
+
+### Piping example
+\begin{itemize}
+\item Consider the two approaches below
+\end{itemize}
+```{r}
+x <- c(1,3,4,1,4,10,19,2.5,1)
+x %>% mean(na.rm = T)
+mean(x)
+```
+\begin{itemize}
+\item Same result!
+\end{itemize}
+
+
+### Piping example (Cont'd)
+\begin{itemize}
+\item Piping really shines when you have many nested calls as in toy example below
+\end{itemize}
+
+### Piping example (Cont'd)
+\begin{itemize}
+\item Piping really shines when you have many nested calls as in toy example below
+\item The following are equivalent:
+\begin{itemize}
+\item reportResult(groupResult(calculateResult(df))
+\item df \%>\% calculateResult() \%>\% groupResult() \%>\% reportResult()
+\end{itemize}
+\end{itemize}
+
+
+### Piping example (Cont'd)
+\begin{itemize}
+\item Piping really shines when you have many nested calls as in toy example below
+\item The following are equivalent:
+\begin{itemize}
+\item reportResult(groupResult(calculateResult(df))
+\item df \%>\% calculateResult() \%>\% groupResult() \%>\% reportResult()
+\end{itemize}
+\item Notice that the second line with piping is more natural to read from left to right, similar to how we read English
+\item Very helpful in more complicated settings
+\end{itemize}
+                    
+### Example datasets
+\begin{itemize}
+\item It may be helpful to go back over these notes in your own R session - we'll test a lot of dplyr functionality on different datasets
+\end{itemize}
+
+### Example datasets
+\begin{itemize}
+\item It may be helpful to go back over these notes in your own R session - we'll test a lot of dplyr functionality on different datasets
+\end{itemize}
+
+### Example datasets
+\begin{itemize}
+\item It may be helpful to go back over these notes in your own R session - we'll test a lot of dplyr functionality on different datasets
+\item Functions from the dplyr package to demonstrate: select, filter, mutate, 
+\end{itemize}
+
+### Example datasets
+\begin{itemize}
+\item It may be helpful to go back over these notes in your own R session - we'll test a lot of dplyr functionality on different datasets
+\item Functions from the dplyr package to demonstrate: select, filter, mutate, 
+\item We will illustrate use of these functions on the flights data set from package \textbf{nycflights13}, previewed on the following slide, and the storms data set from package \textbf{EDAWR}, on the subsequent slide.
+\end{itemize}
+
+
+### Dataset flights
+\begin{itemize}
+\item The actual dimension of flights is 336776 by 19
+\end{itemize}
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(flights[1:10, 1:7])
+```
+
+### Dataset storms
+\begin{itemize}
+\item The actual dimension of flights is 6 by 4
+\end{itemize}
+```{r echo = FALSE, results = 'asis'}
+knitr::kable(storms)
+```
+
+
+### The dplyr::select function
+\begin{itemize}
+\item select: Select/rename variables by name
+\item \textbf{select(.data, ..., .dots)} - .data: a tbl, ...: comma separated list of unquoted expressions, .dots: Use select\_() to do standard evaluation (using strings)
+\end{itemize}
+```{r eval = FALSE}
+flights %>% select(year, month)
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable((flights %>% select(year, month))[1:4,])
+```
+
+### The dplyr::select function
+\begin{itemize}
+\item We often have a fixed vector of string variables we would like to keep in the analysis
+\item Use select\_() with .dots argument!
+\end{itemize}
+```{r eval = FALSE}
+flights %>% select_(.dots = c("year", "month", "dep_time", 
+                              "dep_delay", "arr_time", 
+                              "arr_delay", "flight"))
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable((flights %>% select_(.dots = c("year", "month", "dep_time", 
+                              "dep_delay", "arr_time", 
+                              "arr_delay", "flight")))[1:5,])
+```
+
+### The dplyr::select function
+\begin{itemize}
+\item Sometimes we might only want to remove a variable or variables
+\end{itemize}
+```{r eval = FALSE}
+flights %>% select(-year)
+flights %>% select_(.dots = c("-year", "-origin", "-day"))
+flights %>% select(-sched_dep_time:-arr_time)
+```
+
+### Special functions for dplyr::select
+\begin{itemize}
+\item Several variables in your dataset may have a similar naming convention, i.e. variablet1, variablet2, etc.
+\item Perhaps we only want to extract all of this information in one swoop, how do we do it?
+\item Use ends\_with, starts\_with, contains, matches, num\_range, one\_of....
+\end{itemize}
+```{r eval = FALSE}
+## Select variables ending with time and the year/month
+flights %>% select(year, month, ends_with("time"))
+## Select variables starting with arr and the year/month
+flights %>% select(year, month, starts_with("arr"))
+```
+```{r results = "asis", echo = FALSE}
+knitr::kable((flights %>% select(year, month, ends_with("time")))[1:5,1:5])
+```
+
+### The dplyr::filter function
+\begin{itemize}
+\item Sometimes we need to include only observations which satisfy some criterion for analysis
+\begin{itemize}
+\item Include only cases
+\item Include only those above certain exposure level
+\item Include only those with positive survival times
+\end{itemize}
+\item The filter function comes to the rescue!
+\end{itemize}
+
+### The dplyr::filter function
+\begin{itemize}
+\item filter: Return rows with matching conditions
+\item \textbf{filter(.data, ...)} - .data: a tbl, ...: logical predicates. Multiple conditions are conmbined with \&
+\end{itemize}
+```{r eval = FALSE}
+storms %>% filter(pressure == 1010)
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable(storms %>% filter(pressure == 1010))
+```
+```{r eval = FALSE}
+storms %>% filter(storm == 'Alberto' | pressure > 1009)
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable(storms %>% filter(storm == 'Alberto' | pressure > 1009))
+```
+
+### The dplyr::filter function
+\begin{itemize}
+\item Can use all comparisons, logical expressions in filter(), filter\_(). The filter\_() function takes string arguments rather than explicit expressions
+\item Logical expressions: \&, |, !, any, all, $\dotsc$
+\item Comparisons: <, >, ==, <=, >=, !=, \%in\%, is.na, !is.na,  $\dotsc$
+\end{itemize}
+```{r eval = FALSE}
+flights %>% filter(!is.na(air_time))
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable((flights %>% filter(!is.na(air_time)))[1:4, 1:5])
+```
+
+### The dplyr::summarise function
+\begin{itemize}
+\item summarise: Summarise multiple values to a single value.
+\item \textbf{summarise(.data, ...)} - .data: a tbl, ...: name-value pairs of summary functions. For example, mean(), sd(), etc.
+\end{itemize}
+```{r eval = FALSE}
+storms %>% summarise(mean_wind = mean(wind), 
+                     mean_pressure = mean(pressure))
+```
+```{r results = 'asis', echo = FALSE}
+knitr::kable(storms %>% summarise(mean_wind = mean(wind), mean_pressure = mean(pressure)))
+```
+
+
+

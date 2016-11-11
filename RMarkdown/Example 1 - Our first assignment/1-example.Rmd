@@ -1,0 +1,46 @@
+---
+title: "Example 1: Presenting Plots, Regular text and Sections"
+author: Spencer Lourens, Ph.Daaaaaaaay
+output: pdf_document
+---
+
+```{r include = FALSE}
+library(viridis)
+library(knitr)
+```
+
+\section{Section 1} This is our first paragraph example in R Markdown. The file 1-example.Rmd can be opened in RStudio, and then "knitted" using alt + shift + K (Windows) or command + shift + K (MacOS). The following blocks show random generation of normal random variables and a histogram plot of this data
+
+# This is a "Header 1"
+## This is a "Header 2"
+### This is a "Header 3"
+
+## See [RMarkdown Basics](http://rmarkdown.rstudio.com/authoring_basics.html) for more basics in RMarkdown
+
+## Inline R code: `r rnorm(1, 0,1)` was generated from a N(0,1) distribution. 
+
+## Normal RVs histogram below: generated with an ``R code chunk"
+```{r echo=FALSE}
+## Notice the echo=FALSE above within the { }... this tells RMarkdown not to show the code but only the result.
+normRVs <- rnorm(2000, 0, 1)
+hist(normRVs, breaks = 20)
+```
+
+## How about a plot of exponential RVs? Notice that the code below is included in the document. This is because we do not include echo=FALSE within the { }s for this R code block
+
+```{r}
+expRVs <- rexp(2000, rate = 5)
+hist(expRVs, breaks = 20)
+```
+
+If we don't want the text bolded, we can just type in the Rmd file as we would in usual LaTeX. Below we illustrate a R code chunk with the option ``eval = FALSE", which is very useful when you want to show the code you are using, but not evaluate the code.
+
+```{r eval = FALSE}
+expRVs <- rexp(2000, rate = 5)
+hist(expRVs, breaks = 20)
+```
+
+Notice this did not produce another histogram plot, as opposed to the R code chunk above it.
+
+
+

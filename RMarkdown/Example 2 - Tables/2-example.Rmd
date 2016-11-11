@@ -1,0 +1,45 @@
+---
+title: "Example 2: Tables in RMarkdown"
+output: pdf_document
+---
+
+```{r include = FALSE}
+library(viridis)
+library(knitr)
+library(xtable)
+library(stargazer)
+```
+
+\section{RMarkdown Tables}
+This is our first paragraph example in R Markdown. The file 1-example.Rmd can be opened in RStudio, and then "knitted" using alt + shift + K (Windows) or command + shift + K (MacOS). The following blocks show random generation of normal random variables and a histogram plot of this data
+
+## How about a table? There are many functions you can use to embed tables in your reports
+## First, knitr::kable ...
+
+```{r echo=FALSE}
+## Notice the echo=FALSE above within the { }... this tells RMarkdown not to show the code but only the result.
+normDF <- data.frame(y = rnorm(2, 0, 1), x1 = rnorm(2, 5, 10), x2 = rnorm(2, 1, 2.2), row.names = NULL)
+kable(normDF, caption = "Kable")
+```
+
+## Next: xtable. The argument comment is set to FALSE to prevent xtable from including extra timestamp information above the table. Notice the latex code is produced directly below, rather than a table like we want. To fix this, we add the argument results = "asis" in within the {} of the R code chunk.
+
+```{r echo = FALSE}
+print(xtable(normDF, caption = "xtable"), comment = F)
+```
+
+## The following table results from adding results = "asis" within the {} of the R code chunk.
+
+```{r results = "asis", echo = FALSE}
+print(xtable(normDF, caption = "xtable"), caption.placement = "top", comment=F) 
+```
+
+## Also, Stargazer! Notice that summary information for each variable is presented by stargazer. The argument header = F is specified to stop stargazer from including extra timestamp information above the table.
+
+```{r echo = FALSE, results = "asis"}
+stargazer(normDF, title = "Stargazer", header = F)
+```
+
+\section{XTable Extras}
+There are a lot of extra arguments that can be passed to print() when using xtable. These arguments, such as add.to.row, only.contents (for adding extra structure to the headers of the table), etc. which can be very helpful in customizing the look of tables in your reports for publication quality PDFs. For a list of options to print for xtables, type ?print.xtable in your R session.
+

@@ -1,0 +1,144 @@
+---
+title: "Visualization in R"
+author: "Spencer Lourens"
+date: '`r format(Sys.Date(), "%B %d %Y")`'
+output:
+  ioslides_presentation:
+    css: ./styles.css
+subtitle: The ggplot2 package
+fontsize: 10pt
+---
+
+```{r library_inlusions, include = FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(EDAWR)
+library(nycflights13)
+```
+
+## Outline of Lecture
+- Background of ggplot2
+- The grammar of graphics
+- Types of plots
+- Creating plots
+    
+    
+## Background of ggplot2
+- Data visualiation package and plotting system for R
+- Created by Hadley Wickham, Chief Scientist at RStudio
+- Takes the "good parts" of lattice and base, but none of the "bad parts"
+- Based on concepts from The Grammar of Graphics by Leland Wilkinson (2005)
+- The ggplot2 package has become one of the most widely used in the R language
+
+## The Grammar of Graphics
+- The Grammar of Graphics was published by Leland Wilkinson in 2005
+- What do we mean, grammar?
+    - "The fundamental principles or rules of an art or science"
+    - Essentially, separate visualizations into components, and build visualizations piece-by-piece
+- We'll follow Hadley's adaptation of the Grammar of Graphics, employed in ggplot2
+    - Data maps to aesthetics to represent geoms, creating layers
+    - Graphics are composed of one or more layers
+
+## Layers
+- Each layer is composed of essentially 4 parts
+    - Data and aesthetic mapping
+    - A statistical transformation of the data (identity)
+    - a geometric object to represent in the graphic
+    - a position adjustment (if necessary, i.e. random jitters, dodges)
+
+## Making the Abstract Concrete
+- Below is a data frame that we will use to create a scatterplot
+```{r echo = FALSE}
+age <- rnorm(5, c(12, 14, 16, 17, 19), 0.25)
+weight <- rnorm(5, -30 + 10 * age, 0.4)
+class <- c("A", "A", "A", "B", "B")
+df1 <- data.frame(group = class, age = age, weight = weight)
+```
+```{r results = "asis", echo = FALSE}
+knitr::kable(df1)
+```
+
+## Data Defined: now what?
+- We may be interested in constructing a scatterplot of weight vs age
+- Must define our aesthetics for the plot
+```{r echo = FALSE}
+df2 <- df1 %>% rename(y = weight, x = age)
+```
+```{r results = "asis", echo = FALSE}
+knitr::kable(df2)
+```
+
+## Our First ggplot2 Scatterplot
+- Scatterplot code below
+```{r eval = FALSE}
+ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight), 
+                      stat = "identity")
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight), 
+                      stat = "identity")
+```
+
+## Explaining Our First ggplot2 Scatterplot
+- The data used :df
+- The aesthetic mappings: age $\rightarrow$ x, weight $\rightarrow$ y
+- The geometric object representing the data: point
+- The statistical transformation: identity
+- We can add more aesthetic mappings, such as color or facet by class
+
+## Our First ggplot2 Scatterplot
+```{r eval = FALSE}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight, 
+  colour = class), stat = "identity")
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight, 
+  colour = class), stat = "identity") + ggtitle("Colored by Group")
+```
+
+## Our First ggplot2 Scatterplot
+```{r eval = FALSE}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight), 
+  stat = "identity") + facet_wrap( ~ group)
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight), 
+  stat = "identity") + facet_wrap( ~ group) + ggtitle("Faceted by Group")
+```
+
+## Geometric objects
+- Geomertric objects determine how our aesthetic mappings manifest in a visualization
+    - Points
+    - Bars
+    - Lines
+    - Paths
+    - ...
+- The ggplot2 package uses geom_xxx() as a general format for selecting geoms to represent a chosen aesthetic mapping.
+
+## Scales
+- Scales control or govern the mapping from data to an aesthetic property
+    - continuous, discrete, etc.
+- Each aesthetic mapping requires a scale
+    - ggplot2 uses defaults scales whenever possible
+    - these were employed in our scatterplot example
+- Discrete scales are more often necessary to explicitly code
+    - scale_colour_discrete(), scale_colour_manual()
+    - scale_shape_discrete(), scale_shape_manual()
+
+## Our First ggplot2 Scatterplot revisited
+- We don't like red/blue
+```{r eval = FALSE}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight, colour = group), 
+  stat = "identity")) + scale_colour_manual(values = c("brown", "yellow"))
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot() + 
+  geom_point(data = df1, mapping = aes(x = age, y = weight, colour = group), 
+  stat = "identity") + scale_colour_manual(values = c("brown", "yellow"))
+```

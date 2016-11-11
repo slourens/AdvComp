@@ -1,0 +1,9 @@
+
+\documentclass[mathserif]{beamer}
+\usepackage{amssymb, amsmath, amsthm}
+\usepackage{graphicx,color}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage{hyperref}
