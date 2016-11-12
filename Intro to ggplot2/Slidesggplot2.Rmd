@@ -9,20 +9,25 @@ subtitle: The ggplot2 package
 fontsize: 10pt
 ---
 
-```{r library_inlusions, include = FALSE}
+```{r library_inlusions_Import_data, include = FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(EDAWR)
 library(nycflights13)
+troops <- read.csv(file = "/Users/spencerlourens/Desktop/Advanced Computing/Intro to ggplot2/troops.csv", header = T)
+cities <- read.csv(file = "/Users/spencerlourens/Desktop/Advanced Computing/Intro to ggplot2/cities.csv", header = T)
 ```
 
 ## Outline of Lecture
 - Background of ggplot2
 - The grammar of graphics
-- Types of plots
-- Creating plots
-    
+    - Layers
+    - Mappings
+- Scatterplot Example
+    - Geoms
+    - Customizing the plot
+- Other geom examples
     
 ## Background of ggplot2
 - Data visualiation package and plotting system for R
@@ -31,13 +36,23 @@ library(nycflights13)
 - Based on concepts from The Grammar of Graphics by Leland Wilkinson (2005)
 - The ggplot2 package has become one of the most widely used in the R language
 
+## Comparing ggplot2 to base graphics / lattice
+- Compared to base graphics:
+    - ggplot2 is more verbose for simple, canned graphics
+    - ggplot2 is less verbose for more complicated, original graphics
+- Compared to lattice:
+    - ggplot2 provides a more consistent approach across functionalities
+    - Lattice has no "grammar of graphics"
+    - Both packages can provide "trellis" graphs
+        - Display variables or relationships between variables conditioned on another variable (faceting)
+
 ## The Grammar of Graphics
 - The Grammar of Graphics was published by Leland Wilkinson in 2005
 - What do we mean, grammar?
     - "The fundamental principles or rules of an art or science"
     - Essentially, separate visualizations into components, and build visualizations piece-by-piece
 - We'll follow Hadley's adaptation of the Grammar of Graphics, employed in ggplot2
-    - Data maps to aesthetics to represent geoms, creating layers
+    - Data maps to aesthetics which are represented by geoms, creating layers
     - Graphics are composed of one or more layers
 
 ## Layers
@@ -52,8 +67,8 @@ library(nycflights13)
 ```{r echo = FALSE}
 age <- rnorm(5, c(12, 14, 16, 17, 19), 0.25)
 weight <- rnorm(5, -30 + 10 * age, 0.4)
-class <- c("A", "A", "A", "B", "B")
-df1 <- data.frame(group = class, age = age, weight = weight)
+group <- c("A", "A", "A", "B", "B")
+df1 <- data.frame(group = group, age = age, weight = weight)
 ```
 ```{r results = "asis", echo = FALSE}
 knitr::kable(df1)
@@ -72,8 +87,8 @@ knitr::kable(df2)
 ## Our First ggplot2 Scatterplot
 - Scatterplot code below
 ```{r eval = FALSE}
-ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight), 
-                      stat = "identity")
+ggplot() + geom_point(data = df1, mapping = aes(x = age, 
+  y = weight), stat = "identity")
 ```
 ```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
 ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight), 
@@ -81,22 +96,31 @@ ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight),
 ```
 
 ## Explaining Our First ggplot2 Scatterplot
-- The data used :df
+- The call to ggplot() tells R that we want to use ggplot2 functionality
+    - You can specify the dataset here to use the same data for all layers in your plot
+    - ggplot(data = df1) + ...
+- The call to geom_point() separated by a "+" creates the aesthetic mappings and determines the geom to use
+- Argument stat = "identity" tells ggplot to not transform or aggregate the data
+    - The stat argument is a little confusing. It doesn't mean, "log", "square root", etc. 
+    - Think of this as more of a summary of the data, i.e. "boxplot", "identity", etc.
+
+## Explaining Our First ggplot2 Scatterplot
+- The data: df
 - The aesthetic mappings: age $\rightarrow$ x, weight $\rightarrow$ y
 - The geometric object representing the data: point
 - The statistical transformation: identity
-- We can add more aesthetic mappings, such as color or facet by class
+- Can add more aesthetic mappings, such as color or facet by group
+- Can add more geoms, such as lines, smoothers, etc.
 
 ## Our First ggplot2 Scatterplot
 ```{r eval = FALSE}
 ggplot() + 
   geom_point(data = df1, mapping = aes(x = age, y = weight, 
-  colour = class), stat = "identity")
+  colour = group), stat = "identity")
 ```
 ```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
-ggplot() + 
-  geom_point(data = df1, mapping = aes(x = age, y = weight, 
-  colour = class), stat = "identity") + ggtitle("Colored by Group")
+ggplot() + geom_point(data = df1, mapping = aes(x = age, y = weight, 
+  colour = group), stat = "identity") + ggtitle("Colored by Group")
 ```
 
 ## Our First ggplot2 Scatterplot
@@ -131,14 +155,151 @@ ggplot() +
     - scale_shape_discrete(), scale_shape_manual()
 
 ## Our First ggplot2 Scatterplot revisited
-- We don't like red/blue
 ```{r eval = FALSE}
 ggplot() + 
-  geom_point(data = df1, mapping = aes(x = age, y = weight, colour = group), 
-  stat = "identity")) + scale_colour_manual(values = c("brown", "yellow"))
+  geom_point(data = df1, mapping = aes(x = age, y = weight, 
+  colour = group), stat = "identity")) + scale_colour_manual(
+  values = c("brown", "yellow"))
 ```
 ```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
 ggplot() + 
   geom_point(data = df1, mapping = aes(x = age, y = weight, colour = group), 
   stat = "identity") + scale_colour_manual(values = c("brown", "yellow"))
+```
+
+## A More Complete Scatterplot
+```{r eval = FALSE}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+  colour = Species)) + geom_point() + geom_smooth(method = "lm")
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + geom_point() +   
+       geom_smooth(method = "lm")
+```
+
+## A More Complete Scatterplot
+- A lot more customization possible
+    - Remove the confidence bands by setting argument se to FALSE in geom_smooth
+    - Change x and y axis names with xlab() and ylab()
+    - Add title with ggtitle()
+    - Backgrounds can be changed, the grid can be removed, etc.
+    - Non-linear smoothers can be used 
+    
+## A More Complete Scatterplot
+```{r eval = FALSE}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, 
+  colour = Species)) + geom_point() + geom_smooth(
+  method = "loess", span = 0.9) + ylab("Sepal Width") + 
+  xlab("Sepal Length") + ggtitle("Sepal Width vs Sepal Length")
+```
+```{r echo = FALSE, fig.width = 5, fig.height = 3.5, fig.align = "center"}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species)) + geom_point() +   
+       geom_smooth(method = "loess", span = 0.9) + ylab("Sepal Width") + xlab("Sepal Length") + ggtitle("Sepal Width vs Sepal Length")
+```
+    
+## A Spaghetti Plot in ggplot2
+- Using a transformed version of the tb dataset from EDAWR package
+```{r echo = FALSE}
+tb2 <- tb %>% mutate(cases = adult + child + elderly) %>% group_by(country, year) %>% summarise(cases = sum(cases))
+```
+```{r eval = FALSE}
+ggplot() + geom_line(data = tb2, aes(x = year, 
+  y = cases, group = country))
+```
+```{r warning = FALSE, echo = FALSE, fig.width = 5, fig.height = 3.5, fig.align = "center"}
+ggplot() + geom_line(data = tb2, aes(x = year, y = cases, group = country))
+```
+
+## Improving our Spaghetti Plot
+- Perhaps faceted by country?
+```{r eval = FALSE}
+ggplot() + geom_line(data = tb2, aes(x = year, 
+  y = cases, group = country)) + facet_wrap( ~ country)
+```
+```{r warning = FALSE, echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot() + geom_line(data = tb2[1:304,], aes(x = year, 
+  y = cases, group = country)) + facet_wrap(~ country) + theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.x = element_text(size = 5))
+```
+
+## A Simple Histogram
+```{r eval = FALSE, message = FALSE}
+ggplot(data = iris, aes(x = Sepal.Width)) + geom_histogram() + 
+  geom_point(stat = "bin")
+```
+```{r warning = FALSE, message = FALSE, echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot(data = iris, aes(x = Sepal.Width)) + geom_histogram() + 
+  geom_point(stat = "bin")
+```
+
+## A Better Looking Histogram 
+```{r message = FALSE, eval = FALSE}
+ggplot(data = iris, aes(x = Sepal.Width)) + geom_histogram(
+  stat = "bin", fill = "grey", colour = "black") + 
+  geom_point(stat = "bin", size = 3, colour = "blue")
+```
+```{r message = FALSE, warning = FALSE, echo = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+ggplot(data = iris, aes(x = Sepal.Width)) + geom_histogram(
+  stat = "bin", fill = "grey", colour = "black") + 
+  geom_point(stat = "bin", size = 3, colour = "blue")
+```
+
+## A Better Looking Histogram - Decomposed
+- The above plot is composed of two layers
+    - A layer using the histogram geom (or rectangle)
+    - A layer using the point geom
+- Here's the breakdown of each layer
+    - data: iris
+    - aesthetic: x = Sepal.Width
+    - geometric object: histogram/point
+    - transformation: "bin" - based on binwidth, bin the values
+    - positional adjustment - none
+
+## The Intelligence of ggplot2
+- The concept of layering 
+- We can "abuse" the intelligence to shorten our code
+    - Most geom_xxx() function's have default behavior
+    - Don't need to specify stat = "bin" for geom_histogram()
+    - Similarly, don't need to specify stat = "boxplot" for geom_boxplot()
+    - Don't need stat = "identity" for geom_point(), geom_line()
+- If using the same data for each layer, specify data in ggplot() call
+- Same for aesthetic mappings
+
+## Recreating a Famous Graphic - Napoleon's March
+- Data from Napoleon's historic attempt to defeat Russia
+- Often referred to simply as "The French Invasion of Russia"
+    - June to December 1812
+    - Russia retreated from Smolensk, where Napoleon had a great victory
+    - Burned and pillaged their own villages while retreating, preventing Napoleon's army from living off the land
+    - Slowly wittled away at his army as they continued to chase the Russian army into the interior of Russia
+
+## Recreating a Famous Graphic - Napoleon's March
+- Will recreate Charles Joseph Minard's famous graphic of the march
+    - Shows the ever decreasing size of Napoleon's army on their way to Moscow and retreating back to France
+    - Minard was a civil engineer who contributed much to information graphics/statistical graphics
+    - Small sample of data below
+```{r results = "asis", echo = FALSE}
+knitr::kable(troops)
+```
+
+## The ggplot2 Code 
+```{r eval = FALSE}
+ggplot(data = troops, aes(x = long, y = lat)) + geom_path(
+  aes(size = survivors, colour = direction, group = group), 
+  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), size = 3, 
+  data = cities) + geom_point(aes(x = long, y = lat), 
+  data = cities) + scale_size(range = c(1,10)) + theme_light() + 
+  scale_x_continuous(limits=c(24,39)) + ylab("Latitude") + 
+  xlab("Longitude") + scale_colour_manual(values = c("grey50",
+  "red")) + ggtitle("Napoleon's March on Moscow")
+```
+
+## The Resulting Plot 
+```{r echo = FALSE, fig.width = 8.5, fig.height = 5, fig.align = "center"}
+ggplot(data = troops, aes(x = long, y = lat)) + geom_path(
+  aes(size = survivors, colour = direction, group = group), 
+  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), size = 3, data = cities) + 
+  geom_point(aes(x = long, y = lat), data = cities) + 
+  scale_size(range = c(1,10)) + theme_light() + scale_x_continuous(
+  limits=c(24,39)) + ylab("Latitude") + xlab("Longitude") +  scale_colour_manual(values = c("grey50",
+  "red")) + ggtitle("Napoleon's March on Moscow")
 ```
