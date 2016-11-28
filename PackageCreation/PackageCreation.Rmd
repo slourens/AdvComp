@@ -1,0 +1,144 @@
+---
+title: "R Data Wrangling"
+author: "Spencer Lourens"
+date: '`r format(Sys.Date(), "%B %d %Y")`'
+output:
+  ioslides_presentation:
+    css: ./styles.css
+subtitle: The dplyr and tidyr packages
+fontsize: 10pt
+---
+
+## Outline of Lecture
+- What is an R package?
+- Why use R packages?
+- Package Structure
+- Creating R packages in RStudio - The easy way
+
+## What is an R Package?
+- A package is the fundamental unit of shareable code in the R language.
+    - Code
+    - Data
+    - Documentation
+    - Tests/Examples
+- Thousands of packages can be found on <b>CRAN</b>, <b>Bioconductor</b>, and <b>github</b>
+- Very easy to use in the R system
+    - install.packages("package-name")
+    - library("package-name")
+- An R package is, in it's simplest form, a directory with subdirectories that are organized in a specific manner
+- Can it really be that simple? YES.
+
+## Why Use an R Package?
+- R packages make it easy to share your code with others
+    - Sharing your code with others helps make it better
+    - Find bugs, inefficiencies
+    - Just as writers have other writers read their works, so should developers
+- Better yet, R packages make it very easy to reuse your own code
+    - No need to rewrite that pesky generalized linear hypothesis test code again!
+    - Summarize modeling results in a simple table format
+    - Save yourself time!
+
+## Creating a package in RStudio
+- RStudio has made this process much easier via the use of projects
+- To create a package in RStudio:
+    - File -> New Project
+    - Choose "New Directory"
+    - Choose "R Package"
+    - Name your package, then click "Create Project"
+- You can also do this using the devtools package
+    - devtools::create("/complete/package/path/package_name")
+- You used to use package.skeleton() or create from scratch using the "Writing R Extensions" manual
+
+## Creating a package in RStudio
+- You now have the basic set-up for an R package in the location you specified in the last slide
+- This is the smallest working package with the following components
+    - An R/ directory
+    - A NAMESPACE file
+    - A DESCRIPTION file
+- What are these components? Why are they here? What does it all mean????
+
+## Package Structure
+- A package is just a directory organized into subdirectories
+- Main directory name is the name of your package, i.e. SpenceR
+- R/
+    - All R programs go here - no folders/directories!
+- man/
+    - All R documentation for R functions go here
+- NAMESPACE file
+    - What packages does the package import (essentially, loads these packages - not library()!)
+    - What functions in your package do you want users to have access to? (exports)
+- DESCRIPTION file
+    - Who wrote the package, what does it do, ...
+    - What packages does the package "depend" on
+
+## Package Structure - R/
+- All of your R programs reside here
+- If your package has several functions - use multiple .R files
+- Give them meaningful names
+    - utility_funcs.R
+    - plotting_funcs.R
+    - modeling_funcs.R
+- Assume case insensitivity (some operating systems are case-insensitie)
+- Hadley's rule: if I cant remember where a function lives, I need more files, or better names
+
+## Package Structure - DESCRIPTION file
+- Stores important metatadata for the package
+- Includes package title, versions, authors, license, description, and what your package DEPENDS on
+- DEPENDS
+  - Imports: what is NEEDED to run your package
+  - Suggests: what is SUGGESTED to run your package
+  - Packages specified in imports will be installed with your package automatically
+- License is important to understand when you want to released your package to others, but we won't delve into that here
+  
+## Package Structure - DESCRIPTION file
+- Imports:
+    - Include version of package
+    - Safest to choose version you use and above
+    - When using functions from other packages, use package::func()
+    - Imports only makes the namespace accesible, it doesn't call library()
+- Suggests:
+    - You might use suggests if the main functionality in your package doesn't require the specified package
+    - Packages in suggests are <b>NOT</b> automatically installed with your package
+    - You will need to send a message to the user if they attempt to use functionality from a package in Suggests and do not have the package installed
+    - isNamespaceLoaded("pkg", quietly = TRUE)
+
+## Package Structure - NAMESPACE file
+- Two components: imports and exports
+- Imports:
+    - Determines how your package finds a function. In which package does it look?
+    - This helps tremendously when there are multiple packages loaded, sometimes with the same name.
+    - Hmisc::summarize(), dplyr::summarize()
+- Exports:
+    - Determines which functions are available for use outside of your package
+    - Some functions are only needed for internal use 
+    - The optimization routine or functions responsible for calculating the score/Hessian may not be needed by a user of your package
+    - You may want users to be able to access the log-likelihood, residuals, etc.
+    - Export as few functions as necessary to avoid conflicts with existing packages
+    
+## Package Structure - NAMESPACE file
+- Depends vs Imports??
+    - Depends loads and attaches a package
+    - Imports only loads a package
+    - What?
+- Loading a package loads all data, code, DLLs, etc. from a package
+    - Keeps in memory: you must use package::func() to access a function
+- After loading a package, you can attach that package
+- This adds the package to the search path of R, so you can simply use func() without the package::
+- Preferable to just put packages in imports, not depends
+    - This means that you will always use package::func() in your package
+    - Minimizes changes to the global environment - GOOD!
+    - Interfere with user system as little as possible
+    
+## Developing an R package in RStudio
+- Use RStudio projects makes package development much easier
+    - When you have a project open, only that project workspace is modified - isolation
+    - Navigate to function with ctrl + ., F2
+    - You can test how your package would actually work when installed/loaded/attached
+    - 
+    
+## Documenting your package
+- Package documentation is VERY important
+    - Tells users how package works
+    - Default values in functions, context/examples
+- The roxygen2 package makes documenting functionality from your package much easier
+- 
