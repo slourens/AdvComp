@@ -11,7 +11,7 @@ library(stargazer)
 ```
 
 \section{RMarkdown Tables}
-This is our first paragraph example in R Markdown. The file 1-example.Rmd can be opened in RStudio, and then "knitted" using alt + shift + K (Windows) or command + shift + K (MacOS). The following blocks show random generation of normal random variables and a histogram plot of this data
+This is our second paragraph in RMarkdown. This document briefly shows how you can place tables into your RMarkdown documents.
 
 ## How about a table? There are many functions you can use to embed tables in your reports
 ## First, knitr::kable ...

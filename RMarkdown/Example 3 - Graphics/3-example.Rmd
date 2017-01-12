@@ -20,7 +20,7 @@ Just like in LaTeX, it is pretty simple to insert external graphics into our rep
 \includegraphics[width=250pt, height=250pt]{./Lourens.jpg}
 \end{figure}
 
-## Better, but blurry. We cannot fix that as it is a well-known problem with jpg, png, and other pixel-based graphics. When a photo is ``blown up", the individual pixels take up more and more room, eventually making the image blurry since each pixel is just one color. One solution would be to use scalable vector graphics (SVGs) for images, but we won't talk about this now.
+## Better, but blurry. We cannot fix that as it is a well-known problem with jpg, png, and other pixel-based graphics. When a photo based on raster (or pixel graphics) is ``blown up", the individual pixels take up more and more room, eventually making the image blurry since each pixel is just one color. One solution would be to use scalable vector graphics (SVGs) for images, but we won't talk about this now.
 
 ## Notice that when the output type specified in the document header is pdf_document, we can directly embed LaTeX code, so everything you learned in LaTeX should apply to RMarkdown!!
 

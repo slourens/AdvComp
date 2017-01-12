@@ -4,11 +4,6 @@ author: Spencer Lourens, Ph.Daaaaaaaay
 output: pdf_document
 ---
 
-```{r include = FALSE}
-library(viridis)
-library(knitr)
-```
-
 \section{Section 1} This is our first paragraph example in R Markdown. The file 1-example.Rmd can be opened in RStudio, and then "knitted" using alt + shift + K (Windows) or command + shift + K (MacOS). The following blocks show random generation of normal random variables and a histogram plot of this data
 
 # This is a "Header 1"

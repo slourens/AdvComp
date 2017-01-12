@@ -18,7 +18,6 @@ output:
 library(MASS)
 ```
 
-
 ### R Background
 \begin{itemize}
 \item R is a Statistical Programming Language used for data management, statistical analysis, graphics, and general computation
