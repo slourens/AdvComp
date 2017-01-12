@@ -186,6 +186,16 @@ print.triangleS3 <- function(triangleS3)
 #' new("shapeS4", "red")
 setClass("shapeS4", slots = list(color = "character"))
 
+
+#' Constructor function for shapeS4 class.
+#'
+#' @param color a character string denoting the color of the shape.
+#'
+#' @return an object of class shapeS4.
+#' @export
+#'
+#' @examples
+#' shapeS4("purple")
 shapeS4 <- function(color = "blue")
 {
   myShapeS4 <- new("shapeS4", color = color)
@@ -200,16 +210,39 @@ shapeS4 <- function(color = "blue")
 #' @return An object of class triangleS4
 #' @export
 #'
+#'
 #' @examples
 #' new("triangleS4", color = "red", type = "equilateral")
 setClass("triangleS4", slots = list(color = "character", type = "character"), contains = c("shapeS4"))
 
 
+
+#' Constructor function for triangleS4 class.
+#'
+#' @param color character string denoting the color of the triangle.
+#' @param type character string denoting the type of triangle.
+#'
+#' @return an object of class triangleS4
+#' @export
+#'
+#' @examples
+#' triangleS4("red", "equilateral")
 triangleS4 <- function(color = "blue", type = "right")
 {
   myTriangleS4 <- new("triangleS4", color = color, type = type)
   return(myTriangleS4)
 }
+
+
+setMethod("print",
+          c(x = "triangleS4"),
+          function(x) {
+            print("Here are the properties of the triangle:")
+            print(paste("type: ", x@type, sep = ""))
+            print(paste("color: ", x@color, sep = ""))
+            print(paste("We have a ", x@color, ", ", x@type, " triangle!", sep = ""))
+          }
+)
 
 
 #' An S4 class representing a circle
@@ -228,7 +261,16 @@ setClass("circleS4", slots = list(radius = "numeric", area = "numeric",
 
                                   circumference = "numeric", color = "character"), contains = "shapeS4")
 
-## constructor for circleS4, use this for sensible parameter values
+#' Constructor function for circleS4 class.
+#'
+#' @param radius a numeric scalar denoting the radius of the circle.
+#' @param color a character string denoting the color of the circle.
+#'
+#' @return an object of class circleS4.
+#' @export
+#'
+#' @examples
+#' circleS4(10, "lime green")
 circleS4 <- function(radius, color = "blue")
 {
   area <- pi * radius ^ 2
@@ -239,7 +281,19 @@ circleS4 <- function(radius, color = "blue")
   return(myCircleS4)
 }
 
-#' Title
+setMethod("print",
+          c(x = "circleS4"),
+          function(x) {
+            print("Here are the properites of the circle:")
+            print(paste("radius: ", x@radius, sep = ""))
+            print(paste("area: ", x@area, sep = ""))
+            print(paste("circumference: ", x@circumference, sep = ""))
+            print(paste("color: ", x@color, sep = ""))
+            print(paste("That's a cool ", x@color, " circle!", sep = ""))
+          }
+)
+
+#' Constructor function for rectangleS4 class.
 #'
 #' @slot height numeric scalar representing rectangle height.
 #' @slot width numeric scalar representing rectangle width.
@@ -257,7 +311,17 @@ setClass("rectangleS4", slots = list(height = "numeric", width = "numeric", area
                                      perimeter = "numeric", color = "character"))
 
 
-## Constructor for rectangle - use this to create rectangle with sensible parameters
+#' Constructor function for rectangleS4 class.
+#'
+#' @param height a numeric scalar denoting the height of the rectangle
+#' @param width a numeric scalar denoting the width of the rectangle
+#' @param color a character string denoting the color of the rectangle
+#'
+#' @return an object of class rectangleS4
+#' @export
+#'
+#' @examples
+#' rectangleS4(5, 3.2, "orange")
 rectangleS4 <- function(height, width, color = "blue")
 {
   area <- height * width
@@ -267,3 +331,22 @@ rectangleS4 <- function(height, width, color = "blue")
                        perimeter = perimeter, color = color)
   return(myRectangleS4)
 }
+
+## print for S4 shape objects
+setMethod("print",
+          c(x = "rectangleS4"),
+          function(x) {
+            print("Here are the properties of the rectangle:")
+            print(paste("width: ", x@width, sep = ""))
+            print(paste("height: ", x@height, sep = ""))
+            print(paste("area: ", x@area, sep = ""))
+            print(paste("perimeter: ", x@perimeter, sep = ""))
+            print(paste("color: ", x@color, sep = ""))
+            if (x@width == x@height)
+            {
+              print(paste("Cool! This is actually a ", x@color, " square!", sep = ""))
+            } else {
+              print(paste("What a nice ", x@color, " rectangle!", sep = ""))
+            }
+          }
+)

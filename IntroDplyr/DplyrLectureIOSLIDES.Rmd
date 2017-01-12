@@ -142,7 +142,7 @@ knitr::kable(flights[1:10, 1:7])
 ```
 
 ## Dataset storms
-- The actual dimension of flights is 6 by 4
+- The actual dimension of storms is 6 by 4
 ```{r echo = FALSE, results = 'asis'}
 knitr::kable(storms)
 ```
