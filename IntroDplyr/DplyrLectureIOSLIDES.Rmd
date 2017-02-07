@@ -338,7 +338,7 @@ knitr::kable((flights %>% filter(!is.na(air_time)))[1:4, 1:5])
 - mutate: Add new variables
 - <b class = "myStyle">mutate(.data, ...)</b>
     - .data: a tbl
-    - ... name-value pairs of expressions, i.e. mean = mean(var)
+    - ...: name-value pairs of expressions, i.e. mean = mean(var)
 
 
 ## The dplyr::mutate function
@@ -346,11 +346,11 @@ knitr::kable((flights %>% filter(!is.na(air_time)))[1:4, 1:5])
 - <b class = "myStyle">mutate(.data, ...)</b>
     - .data: a tbl
     - ...: name-value pairs of expressions, i.e. mean = mean(var)
-```{r include = FALSE}
-storms %>% mutate(strength = pressure + wind)
+```{r}
+newStorms <- storms %>% mutate(strength = pressure + wind)
 ```
 ```{r results = "asis", echo = FALSE}
-knitr::kable(storms)
+knitr::kable(newStorms)
 ```
 
 

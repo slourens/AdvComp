@@ -32,7 +32,12 @@ cities <- read.csv(file = "/Users/spencerlourens/Desktop/Advanced Computing/Intr
 ## Background of ggplot2
 - Data visualiation package and plotting system for R
 - Created by Hadley Wickham, Chief Scientist at RStudio
-- Takes the "good parts" of lattice and base, but none of the "bad parts"
+- Takes the "good parts" of lattice and base
+    - Can provide plots for many conditions (facet_wrap())
+    - Can provide many plots on one screen
+- None of the "bad parts"
+    - Can add to geoms/annotation plots in "layers", intuitive and simple
+    - Overall more intuitive, but sometimes need to look up syntax
 - Based on concepts from The Grammar of Graphics by Leland Wilkinson (2005)
 - The ggplot2 package has become one of the most widely used in the R language
 
@@ -150,9 +155,11 @@ ggplot() +
 - Each aesthetic mapping requires a scale
     - ggplot2 uses defaults scales whenever possible
     - these were employed in our scatterplot example
-- Discrete scales are more often necessary to explicitly code
+- Discrete scales are more often necessary to explicitly code for legends
     - scale_colour_discrete(), scale_colour_manual()
     - scale_shape_discrete(), scale_shape_manual()
+- Continuous scales can be explicitly coded:
+    - scale_x_continuous(), scale_y_continuous
 
 ## Our First ggplot2 Scatterplot revisited
 ```{r eval = FALSE}
@@ -285,8 +292,8 @@ knitr::kable(troops)
 ```{r eval = FALSE}
 ggplot(data = troops, aes(x = long, y = lat)) + geom_path(
   aes(size = survivors, colour = direction, group = group), 
-  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), size = 3, 
-  data = cities) + geom_point(aes(x = long, y = lat), 
+  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), 
+  size = 3, data = cities) + geom_point(aes(x = long, y = lat), 
   data = cities) + scale_size(range = c(1,10)) + theme_light() + 
   scale_x_continuous(limits=c(24,39)) + ylab("Latitude") + 
   xlab("Longitude") + scale_colour_manual(values = c("grey50",
@@ -297,7 +304,8 @@ ggplot(data = troops, aes(x = long, y = lat)) + geom_path(
 ```{r echo = FALSE, fig.width = 8.5, fig.height = 5, fig.align = "center"}
 ggplot(data = troops, aes(x = long, y = lat)) + geom_path(
   aes(size = survivors, colour = direction, group = group), 
-  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), size = 3, data = cities) + 
+  lineend = "round") + geom_text(aes(label = city, y = lat + 0.06), 
+                                 size = 3, data = cities) + 
   geom_point(aes(x = long, y = lat), data = cities) + 
   scale_size(range = c(1,10)) + theme_light() + scale_x_continuous(
   limits=c(24,39)) + ylab("Latitude") + xlab("Longitude") +  scale_colour_manual(values = c("grey50",
