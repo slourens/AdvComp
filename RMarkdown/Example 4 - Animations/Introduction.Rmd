@@ -1,0 +1,281 @@
+---
+title: "Introduction to Probability"
+author: "Spencer Lourens"
+date: January 24, 2017
+output: 
+  beamer_presentation:
+    includes:
+      in_header: header.tex
+---
+
+```{r libraryCommands, include = FALSE}
+library(ggplot2)
+library(animation)
+library(VennDiagram)
+```
+
+
+
+### Introduction to Probability
+\begin{itemize}
+\item What is Probability?
+\end{itemize}
+
+
+### Introduction to Probability
+\begin{itemize}
+\item What is Probability?
+\begin{itemize}
+\item Probability is a population level quantity that summarizes the randomness (chances of events occuring) in a given random experiment
+\item Probability summarizes the ``chances" of experiencing or observing different events
+\item Probability must follow a set of rules, often called the Kolmogorov Axioms
+\end{itemize}
+\end{itemize}
+
+### Introduction to Probability
+\begin{itemize}
+\item The Kolmogorov Axioms are the most basic rules of probability, from which many other facts can be derived
+\item To define these axioms, we first define some notation: Let $E$ define an event that may occur, for instance, the event that it will rain tomorrow.
+\item Second, let us denote the entire \textbf{sample space} $= \Omega$. The \textbf{sample space} is the set of all possible events that may occur. For instance, the sample space when rolling one 6 sided die is \{1, 2, 3, 4, 5, 6\}
+\end{itemize}
+
+### Kolmogorov Axioms
+\begin{itemize}
+\item The Kolmogorov Axioms are as follows:
+\begin{itemize}
+\item For any event $E$, the probability that the event occurs is greater than or equal to 0, i.e.  $P(E) \geq 0$.
+\item The probability that something (or at least one event) will occur is 1. Otherwise stated, $P(\Omega) = 1$
+\item If $E_1, E_2, \dots$ are mututally exclusive events (both events cannot happen simultaneously), then $P(\cup_{i=1}^{\infty} E_i) = \sum_{i=1}^{\infty} P(E_i)$. 
+\end{itemize}
+\end{itemize}
+
+### Example: Gastric Bypass Surgery Study
+\begin{itemize}
+\item Obesity is incredibly common among adults in the United States, with 36.5\% of adults qualifying (BMI $\geq$ 30)
+\item Obesity is correlated with several adverse health conditions, including heart disease (hypertension, stroke, etc.), diabetes (lack of blood sugar regulation), and certain types of cancer
+\item Gastric Bypass Surgery (GBS) is an operation for treaing morbidy obesity (BMI > 40), as well as other comorbid conditions such as sleep apnea, hypertension, etc.
+\item We design a study to follow Gastric Bypass Surgery patients over a 3 year period to track their progress and health status.
+\end{itemize}
+
+
+### GBS - Study participant endpoints
+\begin{itemize}
+\item Can characterize general experience by three scenarios:
+\begin{itemize}
+\item (1) Patient completes the study
+\item (2) Patient responds to treatment (GBS)
+\item (3) Patient experiences adverse event related to treatment (Kidney Injury, internal bleeding, etc.)
+\end{itemize}
+\end{itemize}
+
+### GBS - Venn Diagram
+```{r eventsVD, echo = FALSE, dev = 'pdf', out.width = '4in', out.height = '2in'}
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+```
+
+### Defining outcomes from events
+\begin{itemize}
+\item We can easily define outcomes from our baseline events. Suppose we wanted to know the probability that a patient completes the study and responds to the treatment.
+\item What if we wanted to know the probability that a patient responds to treatment but does not complete nor experience an adverse event?
+\item What if we wanted to know the probability that a patient completes the study or experiences an adverse event?
+\item What if we wanted to know the probability that a patient responds to treatment and drops out?
+\end{itemize}
+
+### Finding probabilities of outcomes from Events
+\begin{itemize}
+\item Patient completes the study and responds to treatment - watch the blue X's!
+\end{itemize}
+```{r outcome1VD, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.675, gp=gpar(fontsize = 200, col = "blue"))
+```
+
+### Finding probabilities of outcomes from Events
+\begin{itemize}
+\item Patient responds to treatment but does not complete nor experience an adverse event? - Watch the blue X's!
+\end{itemize}
+```{r outcome2VD, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.675, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.675, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.9, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.675, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.9, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.925, y = 0.5, gp=gpar(fontsize = 200, col = "blue"))
+```
+
+### Finding probabilities of outcomes from Events
+\begin{itemize}
+\item Patient completes the study or experiences an adverse event? - Watch the blue X's!
+\end{itemize}
+```{r outcome3VD, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.325, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.325, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.325, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize= 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.325, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.675, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.3, y = 0.8, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.75, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.325, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.3, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.5, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.675, y = 0.45, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.45, y = 0.525, gp=gpar(fontsize = 350, col = "blue"))
+```
+
+### Finding probabilities of outcomes from Events
+\begin{itemize}
+\item Patient responds to treatment and drops out? - Watch the blue X's!
+\end{itemize}
+```{r outcome4VD, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.7, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.7, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.7, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.newpage()
+grid.draw(draw.triple.venn(0.7, 0.45, 0.55, 0.3, 0.3, 0.3, 0.2, category = c("Complete", "Respond", "Experiences Adverse Event"), cex = rep(2, 7), cat.cex = c(2,2,2), cat.just = list(c(-0.3,5.5), c(1.5,5.5), c(0.5,-4))))
+grid.text("X", x = 0.8, y = 0.7, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.7, y = 0.5, gp=gpar(fontsize = 40, col = "blue"))
+grid.text("X", x = 0.75, y = 0.65, gp=gpar(fontsize = 200, col = "blue"))
+```
+
+### Finding probabilities of outcomes from Events
+\begin{itemize}
+\item Determining probabilities is often like a logic game: there are a number of possibilities, and we are tasked with determining which of the possibilities satisfy the requirements of the event.
+\item Here, we are working with a discretized probability "space". There were only a finite number (in fact, $2^3 = 8$) possibilities. If you look closely, the sum of all the numbers in the bubbles is 1, which means that the probability of Not completing, not responding, AND not experiencing an adverse event is 0.
+\item An important comment:
+\begin{itemize}
+\item Probability is a population-level concept. This means that if we were to carry out a study and calculate these quantities from our sample, we would not be finding the actual probability space. This is because each sample would produce (slightly) different results.
+\end{itemize}
+\end{itemize}
+
+### Calculating Probabilities of Unions
+\begin{itemize}
+\item Kolmogorov's Axioms tell us that $P(A \cup B) = P(A) + P(B)$ provided that A and B are mututally exclusive
+\item Events A and B are mutually exclusive if A and B cannot simultaneously occur, i.e. $P(A \cap B) = 0$
+\item In the event that events A and B are not mutually exclusive, we can once again use a Venn diagram to figure out how to calculate $P(A \cup B)$
+\end{itemize}
+
+### VennDiagram
+```{r vennDiagram, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.pairwise.venn(.4, .3, .1, c("A", "B"), scaled = T))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .3, .1, c("A", "B"), fill = c("blue", "white"), scaled = T))
+grid.text("P(A)", x = 0.3, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .3, .1, c("A", "B"), fill = c("white", "red"),  scaled = T))
+grid.text("P(A)", x = 0.3, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(B)", x = 0.75, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .3, .1, c("A", "B"), fill = c("blue", "red"),scaled = T))
+grid.text("P(A)", x = 0.3, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(B)", x = 0.75, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(A ", x = 0.5, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text(expression(intersect(B)), x = 0.56, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text(")", x = 0.6, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .3, .1, c("A", "B"), fill = c("blue", "red"), scaled = T))
+grid.text("P(A)", x = 0.3, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(B)", x = 0.75, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(A ", x = 0.5, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text(expression(intersect(B)), x = 0.56, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text(")", x = 0.6, y = 0.4, gp=gpar(fontsize=25, col="white"))
+grid.text("P(A ", x = 0.3, y = 0.85, gp=gpar(fontsize=25, col="black"))
+grid.text(expression(union(B)), x = 0.36, y = 0.85, gp=gpar(fontsize=25, col="black"))
+grid.text(") = P(A) + P(B) - P(A", x = 0.555, y = 0.85, gp=gpar(fontsize=25, col="black"))
+grid.text(expression(intersect(B)), x = 0.755, y = 0.85, gp=gpar(fontsize=25, col="black"))
+grid.text(")", x = 0.79, y = 0.85, gp=gpar(fontsize=25, col="black"))
+```
+\begin{itemize}
+\item According to the above animation, if we don't subtract the intersection, we count it twice!
+\end{itemize}
+
+### General Rules of Probability
+\begin{itemize}
+\item The probability of nothing happening (a patient not experiencing any of the events in our example) is 0.
+\item The probability that a patient experiences at least one of our events is 1.
+\item The probability that a patient experiences the opposite of an event is 1 - the probability of the event (Compliment rule)
+\item The probability that a patient experiences either A or B ($P(A \cup B)$), when A and B are mututally exclusive ($P(A \cap B) = 0$), is the sum of the probability of A and the probability of B ($P(A) + P(B)$).
+\item If A is contained in B (or $A \implies B$), then $P(A) \leq P(B)$ (Subset Rule)
+\end{itemize}
+
+### Visual Proofs for Kolmogorov's Second Axiom
+```{r vennDiagramProof1, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.pairwise.venn(.5, .3, 0.0, c("A", "B"), fill = c("red", "red"), scaled = T, cex = rep(2,3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("Visual justification: P(A") ~ union(B) ~ .(")")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.5, .3, 0.0, c("A", "B"), fill = c("red", "white"), scaled = T, cex = rep(2,3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("Visual justification: P(A") ~ union(B) ~ .(") = P(A)")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.5, .3, 0.0, c("A", "B"), fill = c("white", "red"), scaled = T, cex = rep(2, 3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("Visual justification: P(A") ~ union(B) ~ .(") = P(A) + P(B)")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.5, .3, 0.0, c("A", "B"), fill = c("red", "red"), scaled = T, cex = rep(2, 3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("Visual justification: P(A") ~ union(B) ~ .(") = P(A) + P(B)")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.newpage()
+```
+
+### Visual Proof for Subset Rule
+```{r vennDiagramProof2, echo = FALSE, interval = 0.5, aniopts = 'controls', fig.show = 'animate', dev = 'pdf', out.width = '3in', out.height = '2in', fig.align = 'center'}
+grid.draw(draw.pairwise.venn(.4, .1, 0.1, c("A", "B"), fill = c("white", "white"), scaled = T, cex = rep(2,3), cat.cex = rep(2, 2)))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .1, 0.1, c("A", "B"), fill = c("white", "white"), scaled = T, cex = rep(2,3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("A implying B means A is contained in B")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.newpage()
+grid.draw(draw.pairwise.venn(.4, .1, 0.1, c("A", "B"), fill = c("white", "white"), scaled = T, cex = rep(2,3), cat.cex = rep(2, 2)))
+grid.text(bquote(.("A implying B means A is contained in B")), x = 0.5, y = 0.8, gp=gpar(fontsize=25, col = "black"))
+grid.text(bquote(.("This is why") ~ P(A) <= P(B)), x = 0.5, y = 0.2, gp=gpar(fontsize=25, col = "black"))
+```
+
