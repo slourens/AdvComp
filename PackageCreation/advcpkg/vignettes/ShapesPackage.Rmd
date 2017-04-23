@@ -1,0 +1,72 @@
+---
+title: "Using the Advcpkg Package"
+author: "Spencer Lourens"
+date: "Jan 13, 2017"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using the Shape Objects in Package advcpkg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = F}
+library(advcpkg)
+```
+
+
+## THIS IS JUST A MARKDOWN DOCUMENT: If you're good with RMarkdown/LaTeX, you should be able to make decent vignettes. You can also use latex as usual with RMarkdown.
+
+This Vignette discusses how to create and print shapes (general shapes, circles, squares, and triangles) using the S3 and S4 R OOP systems. A very simple package, the main idea is to show how to document S3 and S4 classes, create constructors, and place this all into a package format. Your packages may be much simpler to begin - you can instead choose to hold off on using S3/S4, and just include functions/data in your R package. At some point, you will want to choose an OOP system. We will not cover Reference Classes (RC), but this is the most flexible and sophisticated system, and arguably the best system in R, because of it's close resemblance to actual OOP in other languages. It is also not as widely used as the other systems.
+
+This vignette briefly discusses two separate constructs for creating shape objects in R. The first construct uses S3, the simplest and least sophisticated OOP system in R. The second construct uses S4, a more concrete and second most sophisticated OOP system in R. 
+
+## S3 Shape Classes
+There are four shape classes available which use the S3 OOP system. They are: shapeS3 for general shapes, circleS3 for circle shapes, triangleS3 for triangle shapes, and rectS3 for rectangle shapes (this includes squares)
+
+### S3 Class: shapeS3
+The shapeS3 class is the most general of shape classes in S3. This class does not specify the type of shape, but only categorises the object as a shape. The object may be a circle, triangle, rectangle, paralellogram, octagon, hexagon, or some other more complicated shape. However, this information is not available and not documented by the shapeS3 class. The only property noted for this class is the color.
+
+### Example: Creating a shapeS3 object
+```{r}
+myshapeS3 <- shapeS3("blue")
+myshapeS3
+```
+
+### S3 Class: circleS3
+The circleS3 class is a more specific form of the shape class in S3. This class specifies that the shape is a circle, and the properties radius and color are noted for this object. 
+
+### S3 Class: triangleS3
+The triangleS3 class is a more specific form of the shape class in S3. This class specifies that the shape is a triangle, and the properties type and color are noted for this object. 
+
+### S3 Class: rectS3
+The rectS3 class is a more specific form of the shape class in S3. This class specifies that the shape is a rectangle, and the properties width, height, and color are noted for this object. 
+
+### Example creating a rectS3 object
+```{r}
+myrectS3 <- rectS3(4, 4, "purple")
+print(myrectS3)
+```
+
+
+## S4 Shape Classes
+There are four shape classes available which use the S4 OOP system. They are: shapeS4 for general shapes, circleS4 for circle shapes, triangleS4 for triangle shapes, and rectS4 for rectangle shapes (this includes squares)
+
+### S4 Class: shapeS4
+The shapeS4 class is the most general of shape classes in S4. This class does not specify the type of shape, but only categorises the object as a shape. The object may be a circle, triangle, rectangle, paralellogram, octagon, hexagon, or some other more complicated shape. However, this information is not available and not documented by the shapeS4 classe. The only property noted for this class is the color.
+
+### S4 Class: circleS4
+The circleS4 class is a more specific form of the shape class in S4. This class specifies that the shape is a circle, and the properties radius and color are noted for this object. 
+
+### S4 Class: triangleS4
+The triangleS4 class is a more specific form of the shape class in S4. This class specifies that the shape is a triangle, and the properties type and color are noted for this object. 
+
+### Example using triangleS4
+```{r}
+mytriangleS4 <- triangleS4("red", "obtuse")
+print(mytriangleS4)
+```
+
+
+### S4 Class: rectS4
+The rectS4 class is a more specific form of the shape class in S4. This class specifies that the shape is a rectangle, and the properties width, height, and color are noted for this object. 
+

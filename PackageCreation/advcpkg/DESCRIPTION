@@ -1,10 +1,14 @@
 Package: advcpkg
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A Package to illustrate a simple R package composed of the shape class and classes inheriting from shape
 Version: 0.1
 Date: 2016-11-23
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: person("Spencer", "Lourens", email = "slourens@iu.edu", role = c("aut", "cre"))
+Description: An educational R package to illustrate a simple R package composed of the shape class and classes inheriting from shape. These classes are built in both the S3 and S4 OOP systems of R. Package testing is illustrated via the testthat R package. A simple vignette is created and all necessary objects are documented using the roxygen2 R package. It is hoped that this package serves as a good starting point for creating your own R packages to disseminate your research to the world.
+License: GPL-2
+Imports: methods
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
+Suggests: knitr,
+    rmarkdown, testthat
+VignetteBuilder: knitr
