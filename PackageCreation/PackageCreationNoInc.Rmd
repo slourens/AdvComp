@@ -4,7 +4,6 @@ author: "Spencer Lourens"
 date: '`r format(Sys.Date(), "%B %d %Y")`'
 output:
   beamer_presentation:
-    incremental: true
 subtitle: Creating Well Documented and Reusable Software
 fontsize: 10pt
 ---
