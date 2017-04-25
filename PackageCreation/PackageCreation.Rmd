@@ -68,6 +68,7 @@ library(diagram)
     - A NAMESPACE file
     - A DESCRIPTION file
 - Each of these components has a specific use/meaning in an R package
+- This is the simplest form of an R package, but we'll add more
 
 ## Package Structure
 - A package is just a directory organized into subdirectories
@@ -90,7 +91,7 @@ library(diagram)
     - utility_funcs.R
     - plotting_funcs.R
     - modeling_funcs.R
-- Assume case insensitivity (some operating systems are case-insensitie)
+- Assume case insensitivity (some operating systems are case-insensitive)
 - Hadley's rule: if I can't remember where a function lives, I need more files, or better names for files
 
 ## Package Structure - DESCRIPTION file
@@ -123,7 +124,7 @@ library(diagram)
     - Determines how your package finds a function. In which package does it look?
     - This helps tremendously when there are multiple packages loaded, sometimes with the same name
     - Hmisc::summarize(), dplyr::summarize()
-    - Best practice is to Imports: in description, call namespace::function() for future you
+    - Best practice is to Imports: in DESCRIPTION file, always call namespace::function() for future you
 - Exports:
     - Determines which functions are available for use outside of your package
     - Some functions are only needed for internal use 
@@ -146,9 +147,9 @@ library(diagram)
     - I ALWAYS use namespace::function() to call functions in a package, i.e. I use imports not depends
     
 ## Developing an R package in RStudio
-- Use RStudio projects makes package development much easier
+- Using RStudio projects makes package development much easier
     - When you have a project open, only that project workspace is modified - isolation
-    - We really should make use of projects in all of our workflow, be that collaboration, RA work, reserach work, etc. because it creates an isolated workspace, and you can send project folders to collaborators or put them on github
+    - We really should make use of projects in all of our workflow, be that collaboration, RA work, research work, etc. because it creates an isolated workspace, and you can send project folders to collaborators or put them on github
     - This means you never use a global search path, but instead relative search path which will start at the project directory level when you open the Rproject (easier for collaboration)
     - Keep data in project directory, write plots/reports to project directory, etc.
     - Navigate to function with ctrl + ., F2
@@ -169,6 +170,24 @@ library(diagram)
     - Datasets go in the /data directory, which should go in the main package directory
     - Datasets are also documented in an R package - you'll see this in the example package at the end
     - I suggest reading [R Packages - Data](http://r-pkgs.had.co.nz/data.html) for more information
+
+## Testing your package
+- Use the testthat R package
+- Tests you create go in the /tests subdirectory within the main package directory
+- Tests assure that when subsequent changes to your package break previous functionality, you can easily see where the problem arose
+- When you design your software, extra work up front to compartmentalize it in a sensible manner, i.e. one function for log likelihood calculation, one function for gradient calculation, one function for hessian calculation, etc.
+- Allows creation of tests that can alert when created a bug in your code, have a higher chance of knowing where
+- Make sure your newest version isn't a disaster, and users will stay loyal
+- Three short tests provided in the example package - tests are NOT required to check a package, accomplish via devtools::test()
+
+## Vignettes
+- A vignette is similar to an academic paper explaining your package
+- Help pages are only so useful.. have to know what function you are looking for
+- Vignette allows you to explain the idea behind the package, how you expect it to be used
+- Vignettes (or portions of vignettes) can also be published within methodological papers, or as papers themselves (JCGS, JSS, ...)
+- Hadley refers to Vignettes as "Long Form Documentation" in his book on R Packages, which I strongly recommend - much more accessible than Writing R Extensions and free online
+- I've compiled a short vignette for the package that I'll demonstrate - very simple. In your packages, you'll want to explain how to use it with an actual dataset (that may be simulated)
+- Vignettes can be transformed into journal articles, so it's not a waste of time
 
     
 ## Flowchart of overall package structure
@@ -198,7 +217,7 @@ straightarrow(from = pos[8, ], to = pos[18, ], dd = 0.45)
 straightarrow(from = pos[8, ], to = pos[19, ], dd = 0.45)
 straightarrow(from = pos[17, ], to = pos[28, ], dd = 0.45)
 
-my_label <- c("advcpkg/", "data/", "DESCRIPTION", "man/", "NAMESPACE", "R/", "tests", "vignettes", "MyDat.rda", "circleS3.Rd", "df1.Rd", "circleS4.Rd", "...", "df1.R", "S3Shapes.R", "S4Shapes.R", "testthat/", "Shapes\nPackage.html", "Shapes\nPackage.Rmd", "test1.R")
+my_label <- c("advcpkg/", "data/", "DESCRIPTION", "man/", "NAMESPACE", "R/", "tests/", "vignettes/", "MyDat.rda", "circleS3.Rd", "df1.Rd", "circleS4.Rd", "...", "df1.R", "S3Shapes.R", "S4Shapes.R", "testthat/", "Shapes\nPackage.html", "Shapes\nPackage.Rmd", "test1.R")
 my_text_size <- 0.9
 my_edge_length <- 0.065
 for(i in 1:(length(my_label)-1)) {
@@ -215,24 +234,6 @@ for(i in 1:(length(my_label)-1)) {
 textrect(mid = pos[28,], radx = my_edge_length / 1.6, rady = my_edge_length / 1.7, lab = my_label[length(my_label)], cex = my_text_size / 1.4, box.col = "#ADD8E6")
 ```
 
-
-## Testing your package
-- Use the testthat R package
-- Tests you create go in the /tests subdirectory within the main package directory
-- Tests assure that when subsequent changes to your package break previous functionality, you can easily see where the problem arose
-- When you design your software, extra work up front to compartmentalize it in a sensible manner, i.e. one function for log likelihood calculation, one function for gradient calculation, one function for hessian calculation, etc.
-- Allows creation of tests that can alert when created a bug in your code, have a higher chance of knowing where
-- Make sure your newest version isn't a disaster, and users will stay loyal
-- Three short tests provided in the example package - tests are NOT required to check a package, accomplish via devtools::test()
-
-## Vignettes
-- A vignette is similar to an academic paper explaining your package
-- Help pages are only so useful.. have to know what function you are looking for
-- Vignette allows you to explain the idea behind the package, how you expect it to be used
-- Vignettes (or portions of vignettes) can also be published within methodological papers, or as papers themselves (JCGS, JSS, ...)
-- Hadley refers to Vignettes as "Long Form Documentation" in his book on R Packages, which I strongly recommend - much more accessible than Writing R Extensions and free online
-- I've compiled a short vignette for the package that I'll demonstrate - very simple. In your packages, you'll want to explain how to use it with an actual dataset (that may be simulated)
-- Vignettes can be transformed into journal articles, so it's not a waste of time
 
 ## Devtools Workflow
 - See the devtools [cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/devtools-cheatsheet.pdf)
