@@ -54,6 +54,7 @@ library(diagram)
     - Choose "New Directory"
     - Choose "R Package"
     - Name your package, then click "Create Project"
+    - Actually, you should make use of projects as much as possible, not just for packages - it confines your workspace and assures reproducibilty across systems
 - Can also do this using the devtools package
     - devtools::create("/complete/package/path/package_name")
 - Used to use package.skeleton() or create from scratch using the "Writing R Extensions" manual
@@ -76,11 +77,11 @@ library(diagram)
 - man/
     - All R documentation for R functions go here
 - NAMESPACE file
-    - What packages does the package import (essentially, loads these packages - not library()!)
+    - What functions within packages does the package import (not the best, better to always use namespace::function())
     - What functions in your own package do you want users to have access to? (exports)
 - DESCRIPTION file
     - Who wrote the package, what does it do, ...
-    - What packages does the package "depend" on - 
+    - What packages does the package "depend" on, import, suggest - in general, don't use depends 
 
 ## Package Structure - R/
 - All of your R programs reside here
